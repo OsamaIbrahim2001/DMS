@@ -1,0 +1,74 @@
+﻿@model DMS.DTO.DeviceViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Device</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="DeviceID" />
+            <div class="form-group mb-2">
+                <label asp-for="DeviceName" class="control-label"></label>
+                <input asp-for="DeviceName" class="form-control" />
+                <span asp-validation-for="DeviceName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="AcquisitionDate" class="control-label"></label>
+                <input asp-for="AcquisitionDate" class="form-control" />
+                <span asp-validation-for="AcquisitionDate" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label asp-for="Memo" class="control-label"></label>
+                <input asp-for="Memo" class="form-control" />
+                <span asp-validation-for="Memo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-2">
+                @Html.LabelFor(model => model.DeviceCategoryID)
+                @Html.DropDownListFor(model => model.DeviceCategoryID, ViewData["DeviceCategoryID"] as SelectList, "Select a device category", new { @class = "form-control",@id="deviceCategory"})
+                @Html.ValidationMessageFor(model => model.DeviceCategoryID)
+            </div>
+            <div id="propertyValuesContainer" class="mb-2">
+                @Html.Partial("_EditPropertyValuesPartial", Model)
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="mt-2">
+    <a asp-action="Index" class="btn btn-outline-dark">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#deviceCategory").change(function () {
+            var categoryId = $(this).val();
+            if (categoryId) {
+                $.ajax({
+                    url: "/Devices/GetPropertiesForCategory",
+                    type: "GET",
+                    data: { categoryId: categoryId },
+                    success: function (data) {
+                        $("#propertyValuesContainer").html(data);
+                    }
+                });
+            } else {
+                $("#propertyValuesContainer").html("");
+            }
+        });
+    });
+
+</script>

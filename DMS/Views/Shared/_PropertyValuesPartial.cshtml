@@ -1,0 +1,18 @@
+﻿@model List<DMS.DTO.PropertyItemDTO>
+
+@*@foreach (var property in Model)
+{
+    <div class="form-group">
+        <label>@property.PropertyDescription</label>
+        <input type="text" name="PropertyValues[@property.ID].Value" class="form-control" />
+    </div>
+}*@
+
+@foreach (var property in Model)
+{
+    <div class="form-group">
+        <label>@property.PropertyDescription</label>
+        <input type="hidden" name="PropertyItemsID" value="@property.ID" />
+        <input type="text" name="PropertyValues" class="form-control" />
+    </div>
+}

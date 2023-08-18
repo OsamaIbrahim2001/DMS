@@ -1,0 +1,73 @@
+﻿@model DMS.DTO.DeviceViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+ 
+
+<h2>Create Device</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-group mb-2">
+        @Html.LabelFor(model => model.DeviceName)
+        @Html.TextBoxFor(model => model.DeviceName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.DeviceName)
+    </div>
+
+    <div class="form-group mb-2">
+        @Html.LabelFor(model => model.Memo)
+        @Html.TextBoxFor(model => model.Memo, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Memo)
+    </div>
+    <div class="form-group mb-2">
+        @Html.LabelFor(model => model.AcquisitionDate)
+        @Html.TextBoxFor(model => model.AcquisitionDate, new { @class = "form-control date-input" ,type = "datetime-local"})
+        @Html.ValidationMessageFor(model => model.AcquisitionDate)
+    </div>
+
+    <div class="form-group mb-2">
+        @Html.LabelFor(model => model.DeviceCategoryID)
+        @Html.DropDownListFor(model => model.DeviceCategoryID, ViewData["DeviceCategoryID"] as SelectList, "Select a device category", new { @class = "form-control",@id="deviceCategory"})
+        @Html.ValidationMessageFor(model => model.DeviceCategoryID)
+    </div>
+
+
+    <div id="propertyValuesContainer" class="mb-2">
+        @Html.Partial("_PropertyValuesPartial", Model.AvailableProperties)
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Create</button>
+}
+
+
+<div>
+    <a asp-action="Index" class="btn btn-close">Back to List</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#deviceCategory").change(function () {
+            var categoryId = $(this).val();
+            if (categoryId) {
+                $.ajax({
+                    url: "/Devices/GetPropertiesForCategory",
+                    type: "GET",
+                    data: { categoryId: categoryId },
+                    success: function (data) {
+                        $("#propertyValuesContainer").html(data);
+                    }
+                });
+            } else {
+                $("#propertyValuesContainer").html("");
+            }
+        });
+    });
+
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

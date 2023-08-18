@@ -1,0 +1,49 @@
+﻿@model IEnumerable<DMS.DTO.DeviceCategoriesDTO>
+
+@{
+    ViewData["Title"] = "DeviceCategory";
+}
+
+<h1>Categories</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary">Create New Category</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Properities)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                <ul>
+                        @foreach(var porerity in item.Properities)
+                        {
+                            <li>@porerity</li>
+                        }
+                    </ul>   
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ID" class="btn btn-secondary">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div>
+    <a asp-controller="Devices" class="btn btn-primary" asp-action="Index">Devices</a>
+</div>

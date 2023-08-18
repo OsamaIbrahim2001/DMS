@@ -1,0 +1,63 @@
+﻿@model IEnumerable<DMS.DTO.DevicesDTO>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Devices</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-outline-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DeviceName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeviceCategory)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AcquisitionDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Memo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PropertiesValues)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeviceName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DeviceCategory)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AcquisitionDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Memo)
+            </td>
+            <td>
+                <ul>
+                        @foreach(var properity in item.PropertiesValues)
+                        {
+                            <li>@properity.Key <span style="margin-left:40px">@properity.Value</span></li>
+                        }
+                    </ul>
+            </td>
+            <td>
+                <a asp-action="Edit" class="btn btn-secondary" asp-route-id="@item.ID">Edit</a> |
+                <a asp-action="Delete" class="btn btn-danger" asp-route-id="@item.ID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
